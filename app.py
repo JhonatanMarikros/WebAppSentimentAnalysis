@@ -59,10 +59,6 @@ def index():
         file = request.files.get('file')
         
         table_data = None
-        average_positive = None
-        average_neutral = None
-        average_negative = None
-        average_compound = None
 
         # Input User
         sentiment_scores = vader_sentiment(processed_doc1)
@@ -107,11 +103,6 @@ def index():
                 headers = df.drop(columns=['sentiment']).columns.tolist()
                 table_data.insert(0, headers)
 
-                # Menghitung average sentiment scores for untuk CSV
-                average_positive = df['positive'].mean()
-                average_neutral = df['neutral'].mean()
-                average_negative = df['negative'].mean()
-                average_compound = df['compound'].mean()
             except KeyError:
                 return f"Error: The specified column '{text_column}' does not exist in the uploaded CSV. Available columns: {df.columns.tolist()}"
         
@@ -125,10 +116,6 @@ def index():
                                text5=sentiment_scores['neg'],
                                text4=compound,
                                average_popularity=average_popularity,
-                               average_positive=average_positive,
-                               average_neutral=average_neutral,
-                               average_negative=average_negative,
-                               average_compound=average_compound,
                                table_data=table_data)
     
     return render_template('form.html', title="Sentiment Analysis")
